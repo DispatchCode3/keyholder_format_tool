@@ -1,0 +1,634 @@
+
+<!DOCTYPE html>
+<html>
+<head>	
+<title>Keyholder Format Tool</title>
+</head>
+<style>
+/* MS-GRID is the fix for Internet Explorer (I don't understand it, but it works) */
+.entire {	
+	font-family: Verdana;
+	font-size: 18px;
+	background: #eee;
+	display: -ms-grid;
+	display: grid;
+  -ms-grid-columns: 1fr 930px 1fr;
+  grid-template-columns: 1fr 930px 1fr;
+  -ms-grid-rows: 150px auto auto;
+  grid-template-rows: 150px auto auto;
+      grid-template-areas: 
+    "leftsidebar header rightsidebar"
+    "leftsidebar content rightsidebar"
+		"leftsidebar footer rightsidebar";
+}
+
+.header {
+  -ms-grid-row: 1;
+  -ms-grid-column: 2;
+  grid-area: header;
+	-ms-grid-column-align: center;
+	    justify-self: center;
+	align-self: flex-end;
+}
+
+.content {
+  -ms-grid-row: 2;
+  -ms-grid-column: 2;
+  grid-area: content;
+	-webkit-box-align: stretch;
+	    -ms-flex-align: stretch;
+	        align-items: stretch;
+}
+
+.leftsidebar {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 3;
+  -ms-grid-column: 1;
+  grid-area: leftsidebar;
+	background: #FFF;
+}
+
+.rightsidebar {
+  -ms-grid-row: 1;
+  -ms-grid-row-span: 3;
+  -ms-grid-column: 3;
+  grid-area: rightsidebar;
+	background: #FFF;
+}
+
+.footer{
+  -ms-grid-row: 3;
+  -ms-grid-column: 2;
+  grid-area: footer;
+}
+
+input[type=text],[type=tel], select, textarea {
+  width: 99%;
+	font-size: 16px;
+  padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  resize: vertical;
+}
+input:focus {
+   outline: 0;
+   -webkit-box-shadow: 0 0 4px #004080;
+           box-shadow: 0 0 4px #004080;
+}
+
+textarea:focus {
+  outline: 0;
+  -webkit-box-shadow: 0 0 4px #004080;
+          box-shadow: 0 0 4px #004080;
+}
+
+.copy button {
+  width: 100%;
+	height: 80%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+	margin-top: 2.5%;
+	background-color: #008000;
+	color: #FFF;
+	font-size: 36px;
+}
+
+.reset button {
+  width: 100%;
+	height: 80%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+	margin-top: 5%;
+  background-color: #AF1524;
+  color: #FFF;
+	font-size: 18px;
+}
+
+.khOutput textarea {
+	overflow: hidden;
+	height: 1px;
+	background-color: transparent;
+	color: transparent;
+	border: 0px;
+}
+
+.khOutput textarea:focus {
+  outline: 0;
+  -webkit-box-shadow: 0 0 0;
+          box-shadow: 0 0 0;
+}
+
+.khOutput selection {
+    background: #eee;
+}
+
+fieldset {
+	border: 0;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.khForm {
+	display: -ms-grid;
+	display: grid;
+	-ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  -ms-grid-rows: auto auto auto auto auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto auto auto auto;
+      grid-template-areas: 
+		"businessName businessName businessName businessName businessName businessName businessName reset reset reset"
+		"suiteNumber suiteNumber alarmNumber alarmNumber copy copy copy copy copy copy"
+		"premiseTX premiseTX premiseTX premiseTX copy copy copy copy copy copy"
+		"khName1 khName1 khName1 khName1 khTX1 khTX1 khTX1 khAltTX1 khAltTX1 khAltTX1"
+		"khName2 khName2 khName2 khName2 khTX2 khTX2 khTX2 khAltTX2 khAltTX2 khAltTX2"
+		"khName3 khName3 khName3 khName3 khTX3 khTX3 khTX3 khAltTX3 khAltTX3 khAltTX3"
+		"khName4 khName4 khName4 khName4 khTX4 khTX4 khTX4 khAltTX4 khAltTX4 khAltTX4"
+		"khName5 khName5 khName5 khName5 khTX5 khTX5 khTX5 khAltTX5 khAltTX5 khAltTX5"
+		"notes notes notes notes notes notes notes notes notes notes"
+		"khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput khFakeOutput"
+		"khOutput khOutput khOutput khOutput khOutput khOutput khOutput khOutput khOutput khOutput";
+}
+	
+.businessName {
+	-ms-grid-row:1;
+	-ms-grid-column:1;
+	-ms-grid-column-span:7;
+	grid-area:businessName;
+}
+
+.suiteNumber {
+	-ms-grid-row:2;
+	-ms-grid-column:1;
+	-ms-grid-column-span:2;
+	grid-area:suiteNumber;
+}
+
+.alarmNumber {
+	-ms-grid-row:2;
+	-ms-grid-column:3;
+	-ms-grid-column-span:2;
+	grid-area:alarmNumber;
+}
+
+.premiseTX {
+	-ms-grid-row:3;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:premiseTX;
+}
+
+.khName1 {
+	-ms-grid-row:4;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:khName1;
+}
+
+.khTX1 {
+	-ms-grid-row:4;
+	-ms-grid-column:5;
+	-ms-grid-column-span:3;
+	grid-area:khTX1;
+}
+
+.khAltTX1 {
+	-ms-grid-row:4;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:khAltTX1;
+}
+
+.khName2 {
+	-ms-grid-row:5;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:khName2;
+}
+
+.khTX2 {
+	-ms-grid-row:5;
+	-ms-grid-column:5;
+	-ms-grid-column-span:3;
+	grid-area:khTX2;
+}
+
+.khAltTX2 {
+	-ms-grid-row:5;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:khAltTX2;
+}
+
+.khName3 {
+	-ms-grid-row:6;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:khName3;
+}
+
+.khTX3 {
+	-ms-grid-row:6;
+	-ms-grid-column:5;
+	-ms-grid-column-span:3;
+	grid-area:khTX3;
+}
+
+.khAltTX3 {
+	-ms-grid-row:6;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:khAltTX3;
+}
+
+.khName4 {
+	-ms-grid-row:7;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:khName4;
+}
+
+.khTX4 {
+	-ms-grid-row:7;
+	-ms-grid-column:5;
+	-ms-grid-column-span:3;
+	grid-area:khTX4;
+}
+
+.khAltTX4 {
+	-ms-grid-row:7;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:khAltTX4;
+}
+
+.khName5 {
+	-ms-grid-row:8;
+	-ms-grid-column:1;
+	-ms-grid-column-span:4;
+	grid-area:khName5;
+}
+
+.khTX5 {
+	-ms-grid-row:8;
+	-ms-grid-column:5;
+	-ms-grid-column-span:3;
+	grid-area:khTX5;
+}
+
+.khAltTX5 {
+	-ms-grid-row:8;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:khAltTX5;
+}
+
+.reset {
+	-ms-grid-row:1;
+	-ms-grid-column:8;
+	-ms-grid-column-span:3;
+	grid-area:reset;
+}
+
+.copy {
+	-ms-grid-row:2;
+	-ms-grid-row-span:2;
+	-ms-grid-column:5;
+	-ms-grid-column-span:6;
+	grid-area:copy;
+}
+
+.notes {
+	-ms-grid-row: 9;
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 10;
+	grid-area: notes;
+	width: 96%;
+}
+
+.khFakeOutput {
+	-ms-grid-row: 11;
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 10;
+	grid-area: khOutput;	
+}
+
+.khOutput {
+	-ms-grid-row: 11;
+	-ms-grid-column: 1;
+	-ms-grid-column-span: 10;
+	grid-area: khOutput;
+	border-radius: 0px;
+	width: 0%;
+	overflow: hidden;
+	visibility: none;
+}
+
+
+</style>
+<script>
+/* Update current page instead of replacing so we don't lose the data the first time we copy */
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location.href );
+}
+
+function stopRKey(evt) {
+	/* Prevent enter key from trying to submit form which was clearing the data */
+  var evt = (evt) ? evt : ((event) ? event : null);
+  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+  if ((evt.keyCode == 13) && (node.type=="text"))  {return false;}
+}
+
+document.onkeypress = stopRKey;
+
+function resetForm() {
+	/* Reset the entire form*/
+  document.getElementById("khForm").reset();
+  showMsg();
+}
+
+function copyOutput() {
+  /* Get the text field */
+  var copyText = document.getElementById("khOutput");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+}
+
+function showMsg(){
+	/* Get form data and update all elements every time a new input is received */
+  var space = " ";
+  var linebreak = '\n'
+  var tab = '\t'
+  var lineLength = 101;
+  var businessName = document.getElementById('businessName').value;
+  var businessNameN = "Busn:    " + businessName;
+  var suiteNumber = document.getElementById('suiteNumber').value;
+  var suiteNumberN = "Suite:   " + suiteNumber;
+  var suiteNumberS = space.repeat(30 - suiteNumberN.length);
+  var alarmNumber = document.getElementById('alarmNumber').value;
+  var alarmNumberN = "Alarm:   " + alarmNumber;
+  var alarmNumberS = space.repeat(lineLength - alarmNumberN.length - suiteNumberS.length - suiteNumberN.length);
+  var premiseTX = formatTX(document.getElementById('premiseTX').value);
+  var premiseTXN = "Prem:    " + premiseTX;
+  var notes = document.getElementById('notes').value;
+	var khName1 = document.getElementById('khName1').value;
+  var khName2 = document.getElementById('khName2').value;
+  var khName3 = document.getElementById('khName3').value; 
+  var khName4 = document.getElementById('khName4').value; 
+  var khName5 = document.getElementById('khName5').value;
+  var maxKHname = Math.max(Math.ceil(letterValue(khName1), letterValue(khName2), letterValue(khName3), letterValue(khName4), letterValue(khName5)));
+  var khTX1 = formatTX(document.getElementById('khTX1').value);
+  var khTX2 = formatTX(document.getElementById('khTX2').value);
+  var khTX3 = formatTX(document.getElementById('khTX3').value); 
+  var khTX4 = formatTX(document.getElementById('khTX4').value); 
+  var khTX5 = formatTX(document.getElementById('khTX5').value);
+  var maxKHTX = Math.max(khTX1.length, khTX2.length, khTX3.length, khTX4.length, khTX5.length);
+  var khAltTX1 = formatTX(document.getElementById('khAltTX1').value);
+  var khAltTX2 = formatTX(document.getElementById('khAltTX2').value);
+  var khAltTX3 = formatTX(document.getElementById('khAltTX3').value); 
+  var khAltTX4 = formatTX(document.getElementById('khAltTX4').value); 
+  var khAltTX5 = formatTX(document.getElementById('khAltTX5').value);
+	
+	/* Actual layout appearance that we keep hidden from user which we copy later */
+  var kh1N = "";
+  	if (khName1.length > 0) {
+	 kh1N = "KH #1:   " + khFormat(khName1,khTX1,khAltTX1);
+	};
+  var kh2N = "";
+  	if (khName2.length > 0) {
+	 kh2N = "KH #2:   " + khFormat(khName2,khTX2,khAltTX2);
+	};
+  var kh3N = "";
+  	if (khName3.length > 0) {
+	 kh3N = "KH #3:   " + khFormat(khName3,khTX3,khAltTX3);
+	};
+  var kh4N = "";
+  	if (khName4.length > 0) {
+	 kh4N = "KH #4:   " + khFormat(khName4,khTX4,khAltTX4);
+	};
+  var kh5N = "";
+  	if (khName5.length > 0) {
+	 kh5N = "KH #5:   " + khFormat(khName5,khTX5,khAltTX5);
+	};
+	
+	/* Fake the layout appearance cause the output looks different on web vs CAD */
+  var kh1NF = "";
+  	if (khName1.length > 0) {
+	 kh1NF = "KH #1:   " + khFakeFormat(khName1,khTX1,khAltTX1);
+	};
+  var kh2NF = "";
+  	if (khName2.length > 0) {
+	 kh2NF = "KH #2:   " + khFakeFormat(khName2,khTX2,khAltTX2);
+	};
+  var kh3NF = "";
+  	if (khName3.length > 0) {
+	 kh3NF = "KH #3:   " + khFakeFormat(khName3,khTX3,khAltTX3);
+	};
+  var kh4NF = "";
+  	if (khName4.length > 0) {
+	 kh4NF = "KH #4:   " + khFakeFormat(khName4,khTX4,khAltTX4);
+	};
+  var kh5NF = "";
+  	if (khName5.length > 0) {
+	 kh5NF = "KH #5:   " + khFakeFormat(khName5,khTX5,khAltTX5);
+	};	
+	
+	/* String together all real and fake elements for output */
+	document.getElementById('khOutput').value = businessNameN + linebreak + suiteNumberN + suiteNumberS + alarmNumberN + alarmNumberS + linebreak + premiseTXN + linebreak + kh1N + kh2N + kh3N + kh4N + kh5N + notes;  
+	document.getElementById('khFakeOutput').value = businessNameN + linebreak + suiteNumberN + suiteNumberS + alarmNumberN + alarmNumberS + linebreak + premiseTXN + linebreak + kh1NF + kh2NF + kh3NF + kh4NF + kh5NF + notes; 	
+	
+function khFormat(x,y,z) {
+	/* khName#, add tab spacing, khTX#, add tab spacing, khAltTX#, then add linebreak */
+	return  x + fixNameSpace(letterValue(x)) + y + fixPhoneSpace(letterValue(y)) + z + linebreak;
+}
+
+function khFakeFormat(x,y,z) {
+	/* khName#, add tab spacing, khTX#, add tab spacing, khAltTX#, then add linebreak */
+	return  x + space.repeat(40-x.length) + y + space.repeat(30-y.length) + z + linebreak;
+}
+
+function letterValue(x) {
+	/* Assign a numeric value to each character based on their proportional width */
+	var totalX = 7.85;
+	for (i = 0; i < x.length; i++) {
+		if (x.substring(i,i+1) === "W" || x.substring(i,i+1) === "m") {
+		totalX = totalX + 1.4;
+		} else if (x.substring(i,i+1) === "M") {
+		totalX = totalX + 1.3;
+		} else if (x.substring(i,i+1) === "w" || x.substring(i,i+1) === "O" || x.substring(i,i+1) === "Q" || x.substring(i,i+1) === "G" || x.substring(i,i+1) === "D") {
+		totalX = totalX + 1.25;
+		} else if (x.substring(i,i+1) === "H" || x.substring(i,i+1) === "N") {
+		totalX = totalX + 1.2;
+		} else if (x.substring(i,i+1) === "U" || x.substring(i,i+1) === "C" || x.substring(i,i+1) === "K" || x.substring(i,i+1) === "R") {
+		totalX = totalX + 1.15;
+		} else if (x.substring(i,i+1) === "A" || x.substring(i,i+1) === "S" || x.substring(i,i+1) === "V" || x.substring(i,i+1) === "X" || x.substring(i,i+1) === "Z") {
+		totalX = totalX + 1.1;
+		} else if (x.substring(i,i+1) === "P" || x.substring(i,i+1) === "a" || x.substring(i,i+1) === "e" || x.substring(i,i+1) === "o" || x.substring(i,i+1) === "k" || x.substring(i,i+1) === "v" || x.substring(i,i+1) === "x" || x.substring(i,i+1) === "y") {
+		totalX = totalX + .95;
+		} else if (x.substring(i,i+1) === "F") {
+		totalX = totalX + .9;
+		} else if (x.substring(i,i+1) === "L") {
+		totalX = totalX + .85;
+		} else if (x.substring(i,i+1) === "c" || x.substring(i,i+1) === "s" || x.substring(i,i+1) === "z") {
+		totalX = totalX + .8;
+		} else if (x.substring(i,i+1) === "J") {
+		totalX = totalX + .7;
+		} else if (x.substring(i,i+1) === "I" || x.substring(i,i+1) === "r") {
+		totalX = totalX + .65;
+		} else if (x.substring(i,i+1) === "t") {
+		totalX = totalX + .6;
+		} else if (x.substring(i,i+1) === "f" || x.substring(i,i+1) === "," || x.substring(i,i+1) === "." || x.substring(i,i+1) === "j" || x.substring(i,i+1) === " ") {
+		totalX = totalX + .5;
+		} else if (x.substring(i,i+1) === "i" || x.substring(i,i+1) === "l") {
+		totalX = totalX + .4;
+		} else {
+		totalX = totalX + 1;
+		}
+	};
+	return totalX;
+}
+
+function formatTX(x) {
+	/* Regex the phone number, removing dashes, and adding spaces in correct locations if need be */
+	var newX = x;
+	newX = x.replace(/-/g,"")
+	
+	if (newX.length < 8){		
+		return newX.replace(/^(\d{3})(\d)/, '$1 $2');
+	} else if (newX.length >= 8 && newX.length < 11) {
+		return newX.replace(/^(\d{3})(\d{3})(\d)/, '$1 $2 $3');
+	} else {
+		return newX.replace(/^(\d{3})(\d{3})(\d{4})(.*)?/, '$1 $2 $3 $4');
+	}
+}
+
+function fixNameSpace(x) {
+	/* Brute force name spacing because proportional fonts are the worst */
+	if (x > 0 && x < 15) {
+		return space.repeat((15-x)*2) + tab.repeat(5);
+		} else if (x >=15 && x < 23) {
+		return space.repeat((23-x)*2) + tab.repeat(4);
+		} else if (x >= 23 && x < 31) {
+		return space.repeat((31-x)*2) + tab.repeat(3);
+		} else if (x >= 31 && x < 39) {
+		return space.repeat((39-x)*2) + tab.repeat(2);
+		} else if (x >= 39 && x < 47) {
+		return space.repeat((47-x)*2) + tab.repeat(1);
+		} else {
+		return tab.repeat(1);
+		};
+}
+function fixPhoneSpace(x) {
+	/* Brute force phone spacing because proportional fonts are the worst */
+	if (x > 0 && x < 15) {
+		return space.repeat((15-x)*2) + tab.repeat(3);
+		} else if (x >=15 && x < 23) {
+		return space.repeat((23-x)*2) + tab.repeat(2);
+		} else {
+		return tab.repeat(1);
+		};
+}
+}
+</script>
+</head>
+
+<body onload="copyOutput()">
+	<div class="entire">
+			<div class="header"><img src="images/logo.jpg" alt = "DU-COMM Logo"></div>
+			<div class="leftsidebar"></div>
+			<div class="content">
+				<br>
+				<form class="khForm" id="khForm" action=" " autocomplete="off">
+					<fieldset class="reset"><button type="button" class="reset" onclick="resetForm()">Reset</button></fieldset>
+					<fieldset class="copy"><button type="button" class="copy" onclick="copyOutput()">Copy</button></fieldset>
+					<fieldset class="businessName">
+						<label>Business Name</label><br>
+						<input type="text" id="businessName" maxlength="76" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="suiteNumber">
+						<label>Suite #</label><br>
+						<input type="text" id="suiteNumber" maxlength="16" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="alarmNumber">
+						<label>Alarm #</label><br>
+						<input type="text" id="alarmNumber" maxlength="16" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="premiseTX">
+						<label>Premise #</label><br>
+						<input type="text" id="premiseTX" class="phone_us" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khName1">
+						<label>Keyholder</label><br>
+						<input type="text" id="khName1" maxlength="32" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khTX1">
+						<label>Primary TX</label><br>
+						<input type="text" id="khTX1" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khAltTX1">
+						<label>Alternate TX</label><br>
+						<input type="text" id="khAltTX1" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>	
+					<fieldset class="khName2">
+						<input type="text" id="khName2" maxlength="32" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khTX2">
+						<input type="text" id="khTX2" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khAltTX2">
+						<input type="text" id="khAltTX2" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khName3">
+						<input type="text" id="khName3" maxlength="32" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khTX3">
+						<input type="text" id="khTX3" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khAltTX3">
+						<input type="text" id="khAltTX3" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>	
+					<fieldset class="khName4">
+						<input type="text" id="khName4" maxlength="32" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khTX4">
+						<input type="text" id="khTX4" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khAltTX4">
+						<input type="text" id="khAltTX4" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>	
+					<fieldset class="khName5">
+						<input type="text" id="khName5" maxlength="32" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khTX5">
+						<input type="text" id="khTX5" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="khAltTX5">
+						<input type="text" id="khAltTX5" maxlength="22" oninput="showMsg()"></input>
+					</fieldset>
+					<fieldset class="notes">
+						<label>Notes</label><br>					
+						<textarea id="notes" type="text" rows="6" style="resize:none" oninput="showMsg()"></textarea>
+						<br><hr>
+					</fieldset>
+				</form>
+				<form>
+					<fieldset class="khFakeOutput">
+						<label>Formatted Output</label>
+						<textarea id="khFakeOutput" rows="14" style="resize:none" readonly></textarea>
+					</fieldset>				
+					<fieldset class="khOutput">
+						<textarea id="khOutput" type="hidden" style="resize:none" readonly></textarea>
+					</fieldset>
+				</form>
+			</div>
+			<div class="rightsidebar"></div>
+			<div class="footer"></div>
+	</div>
+</body>
+</html>
